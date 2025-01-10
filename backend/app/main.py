@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(title="Mock Data Generator")
 
 origins = [
-    "http://127.0.0.1:5500",
+    "http://localhost:5173",
 ]
 
 app.add_middleware(

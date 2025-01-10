@@ -4,4 +4,11 @@ venv
 # Environment Variables
 .env
 
+# Python Cache
 __pycache__
+
+# Node Modules
+node_modules
+
+# Build files
+dist
