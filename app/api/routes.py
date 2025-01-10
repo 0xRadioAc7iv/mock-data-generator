@@ -1,5 +1,6 @@
 import json
 from fastapi import Request, APIRouter
+from fastapi.responses import StreamingResponse
 from app.services import get_gemini_response
 
 router = APIRouter()
@@ -11,10 +12,26 @@ async def get_json_response(request: Request):
         query = body["query"]
 
         if query is None:
-            return {"query": None, "results": "No query provided"}
+            return { "results": "No query provided" }
 
-        gemini_response = await get_gemini_response(query)
-        response = json.loads(gemini_response["response"])
-        return {"query": query, "results": response}
+        return StreamingResponse(
+            merge_and_stream(query=query),
+            media_type="application/json"
+        )
     except Exception as e:
         return {"error": f"There was an error: {e}"}
+
+async def merge_and_stream(query: str):
+    accumulated_response = ""
+    try:
+        async for chunk in get_gemini_response(query=query):
+            chunk_data = json.loads(chunk)
+
+            if "data" in chunk_data:
+                accumulated_response += chunk_data["data"]
+
+            yield json.dumps({"partial_response": accumulated_response}) + "\n"
+
+        yield json.dumps({"final_response": accumulated_response}) + "\n"
+    except Exception as e:
+        yield json.dumps({"error": f"There was an error: {e}"}) + "\n"

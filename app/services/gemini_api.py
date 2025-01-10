@@ -15,14 +15,14 @@ generation_config = {
   "top_p": 0.95,
   "top_k": 40,
   "max_output_tokens": 8192,
-  "response_schema": content.Schema(
-    type = content.Type.OBJECT,
-    properties = {
-      "response": content.Schema(
-        type = content.Type.STRING,
-      ),
-    },
-  ),
+  # "response_schema": content.Schema(
+  #   type = content.Type.OBJECT,
+  #   properties = {
+  #     "response": content.Schema(
+  #       type = content.Type.STRING,
+  #     ),
+  #   },
+  # ),
   "response_mime_type": "application/json",
 }
 
@@ -34,8 +34,7 @@ model = genai.GenerativeModel(
 
 async def get_gemini_response(query: str):
     try:
-        response = model.generate_content(query)
-        responseText = json.loads(response.text)
-        return responseText
-    except httpx.HTTPStatusError as exc:
-        raise HTTPException(status_code=exc.response.status_code, detail=f"Gemini API error: {exc}")
+        for chunk in model.generate_content(query, stream=True):
+            yield json.dumps({"data": chunk.text}) + "\n"
+    except Exception as exc:
+        yield json.dumps({"error": f"An error occurred: {exc}"}) + "\n"
