@@ -1,39 +1,36 @@
-# Mock Data Generator
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-**Mock Data Generator** is a tool designed to help backend developers quickly populate databases with realistic mock data during development. It allows you to provide a database schema and generates randomized, real-world data that aligns with your schema's field types and constraints.
+## Getting Started
 
-## Features
-
-- Generates realistic, randomized data based on your schema.
-- Supports different field types such as strings, integers, booleans, dates, and more.
-- Customizable to match schema constraints like length, uniqueness, and formats (e.g., email, date).
-- Option to export generated data in JSON, CSV, or SQL insert formats.
-- Option to generate large volumes of data with control over the number of records.
-- Seeding directly into popular databases (e.g., PostgreSQL, MySQL) via integrations.
-
-## Setup
-
-#### 1. Clone the repo
+First, run the development server:
 
 ```bash
-git clone https://github.com/0xRadioAc7iv/mock-data-generator.git
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-#### 2. `cd` into the repo
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-cd mock-data-generator
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-#### 3. Activate & Install
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-```bash
-source venv/Scripts/activate
-pip -r requirements.txt
-```
+## Learn More
 
-#### 4. Run Server
+To learn more about Next.js, take a look at the following resources:
 
-```bash
-fastapi dev app/main.py
-```
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
