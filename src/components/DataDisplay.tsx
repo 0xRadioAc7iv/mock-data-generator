@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "@/hooks/use-toast";
 
 interface DataDisplayProps {
   data: string;
@@ -8,13 +9,44 @@ interface DataDisplayProps {
 export default function DataDisplay({ data }: DataDisplayProps) {
   const [activeTab, setActiveTab] = useState("json");
 
+  const copyToClipboard = (content: string) => {
+    navigator.clipboard.writeText(content).then(
+      () => {
+        toast({
+          title: "Copied to clipboard",
+          description: "The selected data has been copied to your clipboard.",
+        });
+      },
+      (err) => {
+        console.error("Could not copy text: ", err);
+        toast({
+          title: "Error",
+          description: "Failed to copy data to clipboard.",
+          variant: "destructive",
+        });
+      }
+    );
+  };
+
   const renderJsonView = () => {
+    const parsedData = JSON.parse(data);
+
     return (
       <pre
         className="bg-gray-100 p-4 rounded-md overflow-x-auto overflow-y-auto max-h-80"
         style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
       >
-        <code className="language-json">{data}</code>
+        {parsedData.map((item: any, index: number) => (
+          <div
+            key={index}
+            className="mb-2 p-2 hover:bg-gray-200 cursor-pointer rounded"
+            onClick={() => copyToClipboard(JSON.stringify(item, null, 2))}
+          >
+            <code className="language-json">
+              {JSON.stringify(item, null, 2)}
+            </code>
+          </div>
+        ))}
       </pre>
     );
   };
@@ -22,7 +54,7 @@ export default function DataDisplay({ data }: DataDisplayProps) {
   const renderTableView = () => {
     const parsedData = JSON.parse(data);
 
-    if (data.length === 0) return <p>No data available</p>;
+    if (parsedData.length === 0) return <p>No data available</p>;
 
     const headers = Object.keys(parsedData[0]);
 
@@ -39,8 +71,12 @@ export default function DataDisplay({ data }: DataDisplayProps) {
             </tr>
           </thead>
           <tbody>
-            {parsedData.map((row: any, index: any) => (
-              <tr key={index}>
+            {parsedData.map((row: any, index: number) => (
+              <tr
+                key={index}
+                className="hover:bg-gray-100 cursor-pointer"
+                onClick={() => copyToClipboard(JSON.stringify(row, null, 2))}
+              >
                 {headers.map((header) => (
                   <td key={`${index}-${header}`} className="py-2 px-4 border-b">
                     {row[header]}
