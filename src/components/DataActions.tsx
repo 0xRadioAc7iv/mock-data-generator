@@ -15,7 +15,8 @@ interface DataActionsProps {
 }
 
 export default function DataActions({ data, schema }: DataActionsProps) {
-  const [dbType, setDbType] = useState("postgresql");
+  const [dbType, setDbType] = useState("SQL");
+  const [downloadFormat, setDownloadFormat] = useState<"json" | "csv">("json");
 
   const generateInsertQuery = () => {
     if (data.length === 0) return "";
@@ -24,8 +25,7 @@ export default function DataActions({ data, schema }: DataActionsProps) {
     const columns = Object.keys(data[0]).join(", ");
 
     switch (dbType) {
-      case "postgresql":
-      case "mysql":
+      case "SQL":
         const parsedData = JSON.parse(data);
         const values = parsedData
           .map(
@@ -39,7 +39,7 @@ export default function DataActions({ data, schema }: DataActionsProps) {
           .join(",\n");
         return `INSERT INTO ${tableName} (${columns})\nVALUES\n${values};`;
 
-      case "mongodb":
+      case "MongoDB":
         return `db.${tableName}.insertMany(${JSON.stringify(data, null, 2)});`;
 
       default:
@@ -111,16 +111,28 @@ export default function DataActions({ data, schema }: DataActionsProps) {
             <SelectValue placeholder="Select database" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="postgresql">PostgreSQL</SelectItem>
-            <SelectItem value="mysql">MySQL</SelectItem>
-            <SelectItem value="mongodb">MongoDB</SelectItem>
+            <SelectItem value="SQL">SQL</SelectItem>
+            <SelectItem value="MongoDB">MongoDB</SelectItem>
           </SelectContent>
         </Select>
         <Button onClick={copyToClipboard}>Copy INSERT Query</Button>
       </div>
-      <div className="flex gap-4">
-        <Button onClick={() => downloadData("json")}>Download JSON</Button>
-        <Button onClick={() => downloadData("csv")}>Download CSV</Button>
+      <div className="flex items-center gap-4">
+        <Select
+          value={downloadFormat}
+          onValueChange={(value: "json" | "csv") => setDownloadFormat(value)}
+        >
+          <SelectTrigger className="w-[100px]">
+            <SelectValue placeholder="Format" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="json">JSON</SelectItem>
+            <SelectItem value="csv">CSV</SelectItem>
+          </SelectContent>
+        </Select>
+        <Button onClick={() => downloadData(downloadFormat)}>
+          Download Data
+        </Button>
       </div>
     </div>
   );

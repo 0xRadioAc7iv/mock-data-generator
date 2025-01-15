@@ -11,10 +11,16 @@ interface SchemaInputProps {
 export default function SchemaInput({ onSubmit }: SchemaInputProps) {
   const [schema, setSchema] = useState("");
   const [rowCount, setRowCount] = useState(10);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(schema, rowCount);
+    setLoading(true);
+    try {
+      await onSubmit(schema, rowCount);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,8 +49,8 @@ export default function SchemaInput({ onSubmit }: SchemaInputProps) {
             className="mt-1"
           />
         </div>
-        <Button type="submit" className="mt-6">
-          Generate Data
+        <Button type="submit" className="mt-6" disabled={loading}>
+          {loading ? "Generating..." : "Generate Data"}
         </Button>
       </div>
     </form>
