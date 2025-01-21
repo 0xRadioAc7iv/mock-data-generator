@@ -1,13 +1,14 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
 interface InsertDataButtonProps {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   data: any[];
 }
 
 export default function InsertDataButton({ data }: InsertDataButtonProps) {
-  const [dbType, setDbType] = useState("postgresql");
+  // const [dbType, setDbType] = useState("postgresql");
   const { toast } = useToast();
 
   const generateInsertQuery = useCallback(() => {

@@ -16,6 +16,8 @@ export default function Home() {
     setSchema(submittedSchema);
     setRowCount(count);
 
+    console.log(rowCount);
+
     const rowNumberGeneration = `Generate ONLY ${count} rows.`;
 
     const response = await fetch("/api/query", {

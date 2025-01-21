@@ -36,6 +36,7 @@ export default function DataDisplay({ data }: DataDisplayProps) {
         className="bg-gray-100 p-4 rounded-md overflow-x-auto overflow-y-auto max-h-80"
         style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
       >
+        {/* eslint-disable @typescript-eslint/no-explicit-any */}
         {parsedData.map((item: any, index: number) => (
           <div
             key={index}
@@ -71,6 +72,7 @@ export default function DataDisplay({ data }: DataDisplayProps) {
             </tr>
           </thead>
           <tbody>
+            {/* eslint-disable @typescript-eslint/no-explicit-any */}
             {parsedData.map((row: any, index: number) => (
               <tr
                 key={index}

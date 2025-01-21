@@ -14,7 +14,7 @@ interface DataActionsProps {
   schema: string;
 }
 
-export default function DataActions({ data, schema }: DataActionsProps) {
+export default function DataActions({ data }: DataActionsProps) {
   const [dbType, setDbType] = useState("SQL");
   const [downloadFormat, setDownloadFormat] = useState<"json" | "csv">("json");
 
@@ -29,7 +29,7 @@ export default function DataActions({ data, schema }: DataActionsProps) {
         const parsedData = JSON.parse(data);
         const values = parsedData
           .map(
-            (row: any) =>
+            (row: { [s: string]: unknown } | ArrayLike<unknown>) =>
               `(${Object.values(row)
                 .map((value) =>
                   typeof value === "string" ? `'${value}'` : value
@@ -79,8 +79,9 @@ export default function DataActions({ data, schema }: DataActionsProps) {
     } else {
       const parsedData = JSON.parse(data);
       const headers = Object.keys(parsedData[0]).join(",");
-      const csvData = parsedData.map((row: any) =>
-        Object.values(row).join(",")
+      const csvData = parsedData.map(
+        (row: ArrayLike<unknown> | { [s: string]: unknown }) =>
+          Object.values(row).join(",")
       );
       content = [headers, ...csvData].join("\n");
       mimeType = "text/csv";

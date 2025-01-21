@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
   try {
     return NextResponse.json({ message: cleanedText }, { status: 200 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: "Interval Server Error" },
       { status: 500 }
