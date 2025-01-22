@@ -53,7 +53,7 @@ export default function DataActions({ data }: DataActionsProps) {
       () => {
         toast({
           title: "Query copied to clipboard",
-          description: `The ${dbType.toUpperCase()} INSERT query has been copied to your clipboard.`,
+          description: `The ${dbType.toUpperCase()} INSERT query has been copied. Remember to replace table_name with your actual table name in the query.`,
         });
       },
       (err) => {

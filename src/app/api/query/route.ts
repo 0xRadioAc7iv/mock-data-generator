@@ -11,17 +11,44 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
 
-  const response = await model.generateContent(query);
-  const text = response.response.text();
-  const cleanedText = text.replace("```json", "").replace("```", "").trim();
+  const encoder = new TextEncoder();
 
-  try {
-    return NextResponse.json({ message: cleanedText }, { status: 200 });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json(
-      { error: "Interval Server Error" },
-      { status: 500 }
-    );
-  }
+  const stream = new ReadableStream({
+    async start(controller) {
+      try {
+        const responseStream = await model.generateContentStream(query);
+
+        for await (const chunk of responseStream.stream) {
+          const chunkText = chunk.text();
+          console.log(chunkText);
+          controller.enqueue(encoder.encode(chunkText));
+        }
+
+        controller.close();
+      } catch (error) {
+        console.error("Stream error:", error);
+        controller.close();
+      }
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "application/json",
+      "Transfer-Encoding": "chunked",
+    },
+  });
+
+  // const response = await model.generateContent(query);
+  // const text = response.response.text();
+
+  // try {
+  //   return NextResponse.json({ message: text }, { status: 200 });
+  // } catch (error) {
+  //   console.log(error);
+  //   return NextResponse.json(
+  //     { error: "Interval Server Error" },
+  //     { status: 500 }
+  //   );
+  // }
 }

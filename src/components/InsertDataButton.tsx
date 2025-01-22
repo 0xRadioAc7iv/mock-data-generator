@@ -8,13 +8,11 @@ interface InsertDataButtonProps {
 }
 
 export default function InsertDataButton({ data }: InsertDataButtonProps) {
-  // const [dbType, setDbType] = useState("postgresql");
   const { toast } = useToast();
 
   const generateInsertQuery = useCallback(() => {
     if (data.length === 0) return "";
 
-    const tableName = "generated_data"; // You can make this dynamic later
     const columns = Object.keys(data[0]).join(", ");
     const values = data
       .map(
@@ -25,7 +23,7 @@ export default function InsertDataButton({ data }: InsertDataButtonProps) {
       )
       .join(",\n");
 
-    return `INSERT INTO ${tableName} (${columns})\nVALUES\n${values};`;
+    return `INSERT INTO your_table_name (${columns})\nVALUES\n${values};`;
   }, [data]);
 
   const copyToClipboard = () => {

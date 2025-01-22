@@ -8,7 +8,7 @@ const generationConfig = {
   topP: 0.95,
   topK: 40,
   maxOutputTokens: 8192,
-  responseMimeType: "text/plain",
+  responseMimeType: "application/json",
 };
 
 export const model = geminiAI.getGenerativeModel({
@@ -56,7 +56,7 @@ export const model = geminiAI.getGenerativeModel({
         Mandatory fields (e.g., fields that cannot be null).
         Relationships (e.g., foreign keys or dependencies).
         Volume Requirement:
-            Generate data for at least 15 unique entries or as specified. Ensure no duplicate entries unless explicitly allowed in the schema.
+            Generate data for at least 10 unique entries or as specified. Ensure no duplicate entries unless explicitly allowed in the schema.
 
     Additional Guidelines:
 
