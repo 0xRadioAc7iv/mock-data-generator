@@ -18,25 +18,14 @@ export default function Home() {
       body: JSON.stringify({ query: submittedSchema + rowNumberGeneration }),
     });
 
-    if (!response.body) {
-      console.error("ReadableStream not supported");
+    if (!response.ok) {
+      console.error("Error Generating Data");
       return;
     }
 
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let done = false;
-    let buffer = "";
-
-    while (!done) {
-      const { value, done: readerDone } = await reader.read();
-      done = readerDone;
-
-      if (value) {
-        buffer += decoder.decode(value, { stream: true });
-        setGeneratedData(buffer);
-      }
-    }
+    const body = await response.json();
+    const text = body.message;
+    setGeneratedData(text);
   };
 
   return (
