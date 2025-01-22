@@ -16,7 +16,7 @@ The Mock Data Generator is a powerful and user-friendly tool designed for develo
 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/mock-data-generator.git
+git clone https://github.com/0xRadioAc7iv/mock-data-generator.git
 ```
 
 2. Navigate to the project directory
