@@ -31,7 +31,7 @@ export default function SchemaInput({ onSubmit }: SchemaInputProps) {
           id="schema"
           value={schema}
           onChange={(e) => setSchema(e.target.value)}
-          placeholder="Enter your database schema here..."
+          placeholder="Specify Schema like this: TABLE_NAME (COLUMN_1, COLUMN_2, ...)"
           className="mt-1"
           rows={5}
         />
